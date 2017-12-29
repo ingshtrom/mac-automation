@@ -1,4 +1,4 @@
-# MAC Automation
+# mac-automation
 
 ## pages-to-keynote
 Convert a Pages document to Keynote. It has some variables that can be tweeked.
@@ -13,3 +13,4 @@ Convert a Pages document to Keynote. It has some variables that can be tweeked.
 * hard codes the size of the characters in Keynote to 70
 * preserves font, which in turn preserves boldness and italics
 * preserves character color
+
