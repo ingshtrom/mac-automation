@@ -1,6 +1,6 @@
 global filepath, charactersPerPage, currentText, keynoteDocument, currentTextStyles
 
-set filepath to "/Users/alex/Desktop/test.pages"
+set filepath to ""
 set charactersPerPage to 500
 set currentText to ""
 set currentTextStyles to {}
@@ -28,17 +28,17 @@ on flushPage()
 			tell newSlide
 				set slideText to make new text item with properties {object text:currentText}
 				set the size of object text of slideText to 75
-				
+
 				repeat with i from 1 to length of currentText
 					set currentTextItemStyle to item i of currentTextStyles
 					tell slideText
 						set the font of character i of object text to (the font of currentTextItemStyle)
-						--set the size of character i of object text to (the size of currentTextItemStyle) 
+						--set the size of character i of object text to (the size of currentTextItemStyle)
 						--set the size of character i of object text to 75 -- hard code it for now
 						set the color of character i of object text to (the color of currentTextItemStyle)
 					end tell
 				end repeat
-				
+
 				-- set the width of slideText to (slideWidth * 0.8)
 				-- set the height of slideText to (slideHeight * 0.8)
 				-- set the position of slideText to {slideWidth / 2 - (width of slideText), slideHeight / 2 - (height of slideText)}
@@ -55,13 +55,13 @@ end flushPage
 on createNewKeynoteDocument()
 	tell application "Keynote"
 		activate
-		
+
 		-- GET THE THEME NAMES
 		set the themeNames to the name of every theme
-		
+
 		log "Available Keynote themes: " & themeNames
 		log "My theme: " & keynoteTheme
-		
+
 		set keynoteDocument to Â
 			make new document with properties Â
 				{document theme:theme keynoteTheme, width:1920, height:1080}
@@ -80,45 +80,45 @@ on mainFn(location)
 	try
 		set filepath to location
 		createNewKeynoteDocument()
-		
+
 		set thisPOSIXPath to (the POSIX path of filepath)
 		log "FILE TO OPEN: " & thisPOSIXPath
-		
+
 		do shell script "open '" & thisPOSIXPath & "'"
-		
+
 		delay (10)
-		
+
 		tell application "Pages"
 			tell the front document
 				tell the body text
 					set charRefs to a reference to every character
-					
-					
+
+
 					--					log "" & (the color of the first word of the first paragraph)
-					
+
 					--					repeat with paragraphItem in bodyTextByParagraph
 					--						log "para " & (the properties of paragraphItem)
 					repeat with charRef in charRefs
 						set charItem to (contents of charRef)
-						
+
 						set potentialNewCharacterCount to (length of currentText) + 1
-						
+
 						if potentialNewCharacterCount is greater than or equal to charactersPerPage and charItem is equal to " " then
 							my flushPage()
 						end if
-						
+
 						set currentText to currentText & charItem
 						set currentTextStyles to currentTextStyles & {charRef}
 					end repeat
 					--				end repeat
-					
+
 					my flushPage()
 				end tell
 			end tell
-			
+
 			quit
 		end tell
-		
+
 		tell application "Keynote"
 			log "User is being prompted to save the keynote somewhere..."
 			save front document
