@@ -5,9 +5,8 @@ set charactersPerPage to 266
 set currentText to ""
 set currentTextStyles to {}
 
-property slideWidth : 1920
-property slideHeight : 1080
-property fontSize : 95
+property fontSize: 95
+property charSpaceCount: 10
 
 property keynoteTheme : "Black"
 
@@ -42,6 +41,11 @@ on flushPage()
 						
 					end tell
 				end repeat
+				tell application "System Events"
+					repeat with i from 1 to 10
+						keystroke "]" using {command down, option down}
+					end repeat
+				end tell
 			end tell
 		end tell
 	end tell
