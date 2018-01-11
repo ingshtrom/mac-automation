@@ -26,11 +26,11 @@
 	<key>CFBundleIconFile</key>
 	<string>droplet</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.apple.ScriptEditor.id.p2k</string>
+	<string>com.apple.ScriptEditor.id.pages-to-keynote</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>p2k</string>
+	<string>pages-to-keynote</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

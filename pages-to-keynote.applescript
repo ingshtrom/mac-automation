@@ -1,7 +1,7 @@
 global filepath, charactersPerPage, currentText, keynoteDocument, currentTextStyles
 
 set filepath to ""
-set charactersPerPage to 400
+set charactersPerPage to 266
 set currentText to ""
 set currentTextStyles to {}
 
