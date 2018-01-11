@@ -26,11 +26,11 @@
 	<key>CFBundleIconFile</key>
 	<string>droplet</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.apple.ScriptEditor.id.pages-to-keynote</string>
+	<string>com.apple.ScriptEditor.id.p2k</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>pages-to-keynote</string>
+	<string>p2k</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -53,15 +53,15 @@
 		<key>dividerCollapsed</key>
 		<false/>
 		<key>eventLogLevel</key>
-		<integer>0</integer>
+		<integer>2</integer>
 		<key>name</key>
 		<string>ScriptWindowState</string>
 		<key>positionOfDivider</key>
-		<real>559</real>
+		<real>421</real>
 		<key>savedFrame</key>
-		<string>0 33 1440 844 0 0 1440 877 </string>
+		<string>20 190 700 672 0 0 1440 877 </string>
 		<key>selectedTab</key>
-		<string>log</string>
+		<string>result</string>
 	</dict>
 </dict>
 </plist>
