@@ -1,15 +1,19 @@
 global filepath, charactersPerPage, currentText, keynoteDocument, currentTextStyles
 
 set filepath to ""
-set charactersPerPage to 266
+set charactersPerPage to 175 -- CHAR_PER_LINE * <the_number_of_lines_that_fit_per_slide>
 set currentText to ""
 set currentTextStyles to {}
 
-property fontSize: 95
-property charSpaceCount: 10
+property fontSize : 95
+property charSpaceCount : 10
+
+property CHAR_PER_LINE : 35
+property TEXT_FONT : "Arial Bold"
 
 property keynoteTheme : "Black"
 
+-- copied from somewhere. don't remember
 on replaceChars(this_text, search_string, replacement_string)
 	set AppleScript's text item delimiters to the search_string
 	set the item_list to every text item of this_text
@@ -19,6 +23,32 @@ on replaceChars(this_text, search_string, replacement_string)
 	return this_text
 end replaceChars
 
+on addLineBreaksToCurrentText()
+	set updatedText to ""
+	set updatedStyles to {}
+	set shouldBreakNextSpace to false
+	
+	repeat with i from 1 to length of currentText
+		set curChar to character i of currentText
+		
+		if i mod CHAR_PER_LINE is equal to 0 then
+			set shouldBreakNextSpace to true
+		end if
+		
+		if shouldBreakNextSpace is equal to true and curChar is equal to " " then
+			set updatedText to (updatedText & curChar & return & return)
+			set updatedStyles to updatedStyles & {item i of currentTextStyles} & {item i of currentTextStyles} & {item i of currentTextStyles}
+			set shouldBreakNextSpace to false
+		else
+			set updatedText to (updatedText & curChar)
+			set updatedStyles to updatedStyles & {item i of currentTextStyles}
+		end if
+	end repeat
+	
+	set currentText to updatedText
+	set currentTextStyles to updatedStyles
+end addLineBreaksToCurrentText
+
 on flushPage()
 	log "FLUSHING TO KEYNOTE: " & currentText & ". Count: " & (length of currentText)
 	-- create new slide at the end of the document
@@ -26,13 +56,15 @@ on flushPage()
 		tell keynoteDocument
 			set newSlide to make new slide with properties {base slide:master slide "Blank"} at the end of slides
 			tell newSlide
+				my addLineBreaksToCurrentText()
 				set slideText to make new text item with properties {object text:currentText}
 				set the size of object text of slideText to fontSize
+				set the font of object text of slideText to TEXT_FONT
 				
 				repeat with i from 1 to length of currentText
 					set currentTextItemStyle to item i of currentTextStyles
 					tell slideText
-						set the font of character i of object text to (the font of currentTextItemStyle)
+						-- set the font of character i of object text to (the font of currentTextItemStyle)
 						
 						-- since we use a black theme, the text needs to be readible
 						if the color of currentTextItemStyle is not {0, 0, 0} then
@@ -66,14 +98,11 @@ on createNewKeynoteDocument()
 		log "Available Keynote themes: " & themeNames
 		log "My theme: " & keynoteTheme
 		
-		set keynoteDocument to Â
-			make new document with properties Â
-				{document theme:theme keynoteTheme, width:1920, height:1080}
+		set keynoteDocument to make new document with properties {document theme:theme keynoteTheme, width:1920, height:1080}
 		tell keynoteDocument
 			set the base slide of the first slide to master slide "Title & Subtitle"
 			tell the first slide
-				set the object text of the default title item to "Presentation"
-				set the object text of the default body item to "It starts on the next slide"
+				set the object text of the default title item to "Generated on " & (current date)
 			end tell
 		end tell
 	end tell
@@ -143,14 +172,7 @@ on open droppedItems
 	end repeat
 end open
 
-display dialog Â
-	"Please, choose a Pages file to convert to Keynote. " & Â
-	return & Â
-	return & Â
-	Â
-		"If you need to convert a Microsoft Word document, then open it in Pages and save as a pages file." buttons {"Cancel", "Continue"} Â
-	default button Â
-	"Continue" cancel button "Cancel"
+display dialog "Please, choose a Pages file to convert to Keynote. " & return & return & "If you need to convert a Microsoft Word document, then open it in Pages and save as a pages file." buttons {"Cancel", "Continue"} default button "Continue" cancel button "Cancel"
 
 
 open {choose file}
